@@ -2,10 +2,11 @@ package rpc
 
 import (
 	"fmt"
-	"service-users-auth/internal/model"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+
+	"github.com/spch13/service-users-auth/internal/model"
 )
 
 type JWTManager struct {

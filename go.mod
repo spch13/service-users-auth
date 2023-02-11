@@ -1,4 +1,4 @@
-module service-users-auth
+module github.com/spch13/service-users-auth
 
 go 1.18
 

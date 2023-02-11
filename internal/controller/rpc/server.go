@@ -3,11 +3,11 @@ package rpc
 import (
 	"context"
 	"errors"
+	"github.com/spch13/service-users-auth/internal/generated/rpc/auth"
+	"github.com/spch13/service-users-auth/internal/model"
+	"github.com/spch13/service-users-auth/internal/repository"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"service-users-auth/internal/generated/rpc/auth"
-	"service-users-auth/internal/model"
-	"service-users-auth/internal/repository"
 )
 
 type Server struct {

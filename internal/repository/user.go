@@ -2,7 +2,7 @@ package repository
 
 import (
 	"fmt"
-	"service-users-auth/internal/model"
+	"github.com/spch13/service-users-auth/internal/model"
 	"sync"
 )
 

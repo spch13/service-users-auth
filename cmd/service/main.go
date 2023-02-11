@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/spch13/service-users-auth/internal/app"
 	"log"
-	"service-users-auth/internal/app"
 )
 
 func main() {
