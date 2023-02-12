@@ -13,9 +13,9 @@ type (
 	}
 
 	App struct {
-		HOST   string `env:"SERVICE_HOST,required"`
-		PORT   string `env:"SERVICE_PORT,required"`
-		GWPORT string `env:"SERVICE_GW_PORT,required"`
+		HOST   string `env:"SERVICE_AUTH_HOST,required"`
+		PORT   string `env:"SERVICE_AUTH_PORT,required"`
+		GWPORT string `env:"SERVICE_AUTH_GW_PORT,required"`
 	}
 )
 

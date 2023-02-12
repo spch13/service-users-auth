@@ -71,3 +71,9 @@ func (s *Server) CheckProtect(context.Context, *auth.CheckProtectRequest) (*auth
 		Message: "ok",
 	}, nil
 }
+
+func (s *Server) Healthcheck(context.Context, *auth.HealthCheckRequest) (*auth.HealthCheckResponse, error) {
+	return &auth.HealthCheckResponse{
+		Message: "ok",
+	}, nil
+}

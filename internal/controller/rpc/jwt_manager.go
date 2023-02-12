@@ -28,7 +28,7 @@ func NewJWTManager(secretKey string, tokenDuration time.Duration) *JWTManager {
 	}
 }
 
-// Generate generates and signs a new token for a user
+// Generate generates and signs a new access token for a user
 func (manager *JWTManager) Generate(user *model.User) (string, error) {
 	claims := UserClaims{
 		StandardClaims: jwt.StandardClaims{

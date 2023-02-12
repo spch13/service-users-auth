@@ -27,6 +27,11 @@ message CheckProtectResponse {
   string message = 1;
 }
 
+message HealthCheckRequest {}
+message HealthCheckResponse {
+  string message = 1;
+}
+
 service AuthService {
   rpc Login(LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
@@ -43,6 +48,11 @@ service AuthService {
   rpc CheckProtect(CheckProtectRequest) returns (CheckProtectResponse) {
     option (google.api.http) = {
       get: "/check"
+    };
+  }
+  rpc Healthcheck(HealthCheckRequest) returns (HealthCheckResponse) {
+    option (google.api.http) = {
+      get: "/health"
     };
   }
 }
