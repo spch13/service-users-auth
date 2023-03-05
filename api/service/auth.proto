@@ -10,7 +10,7 @@ message LoginRequest {
   string password = 2;
 }
 
-message LoginResponse { string access_token = 1; }
+message LoginResponse {string access_token = 1;}
 
 
 message RegisterRequest {
@@ -19,7 +19,7 @@ message RegisterRequest {
   string confirmPassword = 3;
 }
 
-message RegisterResponse { string access_token = 1; }
+message RegisterResponse {string access_token = 1;}
 
 message CheckProtectRequest {}
 
@@ -28,7 +28,23 @@ message CheckProtectResponse {
 }
 
 message HealthCheckRequest {}
+
 message HealthCheckResponse {
+  string message = 1;
+}
+
+message GetRoleRequest{}
+
+message GetRoleResponse{
+  string role = 1;
+}
+
+message UpdateRoleRequest {
+  string username = 1;
+  string role = 2;
+}
+
+message UpdateRoleResponse {
   string message = 1;
 }
 
@@ -42,6 +58,23 @@ service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {
     option (google.api.http) = {
       post: "/register"
+      body: "*"
+    };
+  }
+  rpc RegisterAdmin(RegisterRequest) returns (RegisterResponse) {
+    option (google.api.http) = {
+      post: "/registerAdmin"
+      body: "*"
+    };
+  }
+  rpc GetRole(GetRoleRequest) returns (GetRoleResponse) {
+    option (google.api.http) = {
+      get: "/getRole"
+    };
+  }
+  rpc UpdateRole(UpdateRoleRequest) returns (UpdateRoleResponse) {
+    option (google.api.http) = {
+      post: "/updateRole"
       body: "*"
     };
   }

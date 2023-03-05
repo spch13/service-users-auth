@@ -30,11 +30,23 @@ func (r *UserRepositoryInMem) Save(user *model.User) error {
 	return nil
 }
 
+func (r *UserRepositoryInMem) UpdateRole(username, role string) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	u, err := r.Find(username)
+	if err != nil {
+		return err
+	}
+
+	u.Role = role
+	r.users[username] = u.Clone()
+
+	return nil
+}
+
 // Find finds a user by username
 func (r *UserRepositoryInMem) Find(username string) (*model.User, error) {
-	r.mu.RLock()
-	defer r.mu.RUnlock()
-
 	user, ok := r.users[username]
 	if !ok {
 		return nil, ErrNotFound

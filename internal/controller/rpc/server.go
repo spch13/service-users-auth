@@ -7,6 +7,7 @@ import (
 	"github.com/spch13/service-users-auth/internal/model"
 	"github.com/spch13/service-users-auth/internal/repository"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
@@ -53,7 +54,7 @@ func (s *Server) Register(ctx context.Context, req *auth.RegisterRequest) (*auth
 	}
 
 	if err := s.userRepo.Save(newUser); err != nil {
-		return nil, status.Errorf(codes.Internal, "error: %s", err)
+		return nil, status.Errorf(codes.Internal, "error save to repo: %s", err)
 	}
 
 	token, err := s.jwtManager.Generate(newUser)
@@ -63,6 +64,60 @@ func (s *Server) Register(ctx context.Context, req *auth.RegisterRequest) (*auth
 
 	return &auth.RegisterResponse{
 		AccessToken: token,
+	}, nil
+}
+
+func (s *Server) RegisterAdmin(ctx context.Context, req *auth.RegisterRequest) (*auth.RegisterResponse, error) {
+	_, err := s.Register(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	err = s.userRepo.UpdateRole(req.Username, "admin")
+	if err != nil {
+		return nil, err
+	}
+
+	loginReq := &auth.LoginRequest{
+		Username: req.Username,
+		Password: req.Password,
+	}
+
+	resp, err := s.Login(ctx, loginReq)
+	if err != nil {
+		return nil, err
+	}
+
+	return &auth.RegisterResponse{
+		AccessToken: resp.AccessToken,
+	}, nil
+}
+
+func (s *Server) GetRole(ctx context.Context, req *auth.GetRoleRequest) (*auth.GetRoleResponse, error) {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		// No metadata in the context
+		return &auth.GetRoleResponse{
+			Role: "empty",
+		}, nil
+	}
+
+	// Get the value of a specific metadata key
+	role := md.Get("role")
+
+	return &auth.GetRoleResponse{
+		Role: role[0],
+	}, nil
+}
+
+func (s *Server) UpdateRole(ctx context.Context, req *auth.UpdateRoleRequest) (*auth.UpdateRoleResponse, error) {
+	err := s.userRepo.UpdateRole(req.Username, req.Role)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating role: %v", err)
+	}
+
+	return &auth.UpdateRoleResponse{
+		Message: "success",
 	}, nil
 }
 
