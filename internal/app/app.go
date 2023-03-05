@@ -43,7 +43,7 @@ func New() (*App, error) {
 	}
 
 	userRepo := repository.NewUserRepoInMem()
-	jwtManager := rpc.NewJWTManager("secret", tokenDuration)
+	jwtManager := rpc.NewJWTManager(cfg.Secret.SecretKey, tokenDuration)
 
 	server := rpc.NewServer(jwtManager, userRepo)
 
